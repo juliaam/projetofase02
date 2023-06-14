@@ -43,11 +43,13 @@ def transformaEmDic(lista):
 			'UMIDADE RELATIVA': linha[5], 'VELOCIDADE DO VENTO': linha[6]}
     return dic
 
-# def corrigirDados(lista):
-# for linhas in dic:
-#     print(linhas)
+def corrigirDados(lista):
+    for chave in dic.values():
+        if chave['PRECIPITACAO'] < 0:
+            chave['PRECIPITACAO'] = 0
+    print(chave)
+    return lista
 
-    # return lista
 # deve indicar o mês e ano iniciais, bem como o mês e ano finais que deseja visualizar os dados. 
 def consultarDados(listaDeDics):
     pesquisa = input("")
@@ -57,6 +59,3 @@ transformaEmDic(itensTransformados)
 # print(dic['0/07/2016']['MAXIMA'])
 # for linha in dic['0/07/2016']:
 #     print(linha)
-print(dic)
-# for linhas in dic:
-#     print(linhas)
