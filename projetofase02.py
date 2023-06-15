@@ -24,7 +24,7 @@ def transformaLista(lista):
 def formataData(dic):
     for item in dic:
         item = item[3:len(item)]
-    print(dic)
+    # print(dic)
     return dic
 
 def transformaDados(linha):
@@ -60,33 +60,50 @@ def corrigirDados(lista): # correção de alguns dados que não condizem com a r
 def consultarDados(listaDeDics):
     dadosDtI = []
     dadosDtF = []
+    # dataInicial = '27/06/2016'
+    # dataFinal = '10/07/2016'
     dataInicial = input("Digite o mês e ano inicial (Ex:06/2017): ")
     dataFinal = input("Digite o mês e ano final para pesquisa: ")
     print("Digite se quer ver 1 - todos os dados")
     print("2 - apenas os de precipitação")
     print("3 - apenas os de temperatura")
     print("4 - apenas os de umidade e vento para o período informado")
-    dadoEscolhido = int(input("1-4:"))
-
+    dadoEscolhido = int(input("1-4:")) 
     # achar index pelo dicionario
-    for value in formataData(dic[dataInicial].values()):
-        dadosDtI.append(value)
-    for value in formataData(dic[dataFinal].values()):
+    for value in dic[dataInicial].values():
+        dadosDtI.append(value) 
+    for value in dic[dataFinal].values():
         dadosDtF.append(value)
     dadosDtI.insert(0, dataInicial)
     dadosDtF.insert(0, dataFinal)
-    indexDtI = formataData(itensTransformados.index(dadosDtI))
-    indexDtF = formataData(itensTransformados.index(dadosDtF))
-    print(itensTransformados [indexDtI: indexDtF])
+    indexDtI = itensTransformados.index(dadosDtI)
+    indexDtF = itensTransformados.index(dadosDtF)
+    listaExibicao = itensTransformados [indexDtI: indexDtF]
+    if dadoEscolhido == 1:
+        print('Data|Precipitação|Temp. Máxima|Temp. Mínima|Horas insolaradas|Temp. Média|Umidade relativa|Velocidade vento')
+    for item in listaExibicao:
+        if dadoEscolhido == 1:
+            print(item)
+        if dadoEscolhido == 2:
+            print(f"Data: {item[0]}, Precipitação: {item[1]}")
+        if dadoEscolhido == 3:
+            print(f"Data: {item[0]}, Temp. Máxima: {item[2]}, Temp. Mínima: {item[3]}, Temp. Média: {item[5]}")
+        if dadoEscolhido == 4:
+            print(f"Data: {item[0]}, Umidade: {item[6]}, Vento: {item[7]}")
     return listaDeDics
+
+def mesMaisChuvoso(dic):
+    for key, value in dic.items():
+        print(key, value[0])
+        return dic
+
 
 dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
 itensTransformados = transformaLista(dadosBrutos)
 dic = {}
-# print(dic['07/2016'])
+
 transformaEmDic(itensTransformados)
-novoDic = formataData(dic)
-print(novoDic)
-# consultarDados(itensTransformados)
 corrigirDados(dic)
-# consultarDados(itensTransformados)
+# consultarDados(dic)
+print(mesMaisChuvoso(dic))
+# 
