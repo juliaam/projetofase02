@@ -30,20 +30,16 @@ def transformaDados(linha):
         cont = cont + 1
     return linha
 
-
-dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
-itensTransformados = transformaLista(dadosBrutos)
-dic = {}
-
-def transformaEmDic(lista):
+def transformaEmDic(lista): #transformar em dicionário para uma busca mais fácil
     for linha in lista:
         dic[linha[0]] = {'PRECIPITACAO': linha[1],
 		    'MAXIMA': linha[2], 'MINIMA': linha[3], 
-		    'HORAS INSOLAÇÃO': linha[3], 'TEMPERATURA MEDIA': linha[4],
-			'UMIDADE RELATIVA': linha[5], 'VELOCIDADE DO VENTO': linha[6]}
+		    'HORAS INSOLAÇÃO': linha[4], 'TEMPERATURA MEDIA': linha[5],
+			'UMIDADE RELATIVA': linha[6], 'VELOCIDADE DO VENTO': linha[7]}
     return dic
 
-def corrigirDados(lista):
+
+def corrigirDados(lista): # correção de alguns dados que não condizem com a realidade
     for chave in dic.values():
         if chave['VELOCIDADE DO VENTO'] < 0:
             chave['VELOCIDADE DO VENTO'] = 0
@@ -53,12 +49,40 @@ def corrigirDados(lista):
     return lista
 
 # deve indicar o mês e ano iniciais, bem como o mês e ano finais que deseja visualizar os dados. 
+# devo permitir reescrever o dado caso esteja errado (validação de dado)
 def consultarDados(listaDeDics):
-    pesquisa = input("")
+    dadosDtI = []
+    dadosDtF = []
+    dataFinal = '8/07/2016'
+    dataInicial ='4/05/2016'
+    # dataInicial = input("Digite o mês e ano inicial (Ex:06/2017): ")
+    # dataFinal = input("Digite o mês e ano final para pesquisa: ")
+    print("Digite se quer ver 1 - todos os dados")
+    print("2 - apenas os de precipitação")
+    print("3 - apenas os de temperatura")
+    print("4 - apenas os de umidade e vento para o período informado")
+    dadoEscolhido = int(input("1-4:"))
+    for value in dic[dataInicial].values():
+        dadosDtI.append(value)
+    for key, value in dic[dataFinal].items():
+        dadosDtF.append(value)
+    dadosDtI.insert(0, dataInicial)
+    dadosDtF.insert(0, dataFinal)
+    indexDtI = itensTransformados.index(dadosDtI)
+    indexDtF = itensTransformados.index(dadosDtF)
+    print(itensTransformados[indexDtI: indexDtF])
 
-# print(transformaEmDic(itensTransformados))
+dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
+itensTransformados = transformaLista(dadosBrutos)
+dic = {}
 transformaEmDic(itensTransformados)
 corrigirDados(dic)
-# print(dic['0/07/2016']['MAXIMA'])
-# for linha in dic['0/07/2016']:
-#     print(linha)
+
+dataInicial = '7/07/2016' 
+# print(itensTransformados.index(['4/05/2016', 0.0, 18.6, 7.1, 5.9, 12.48, 86.0, 1.933333]), 'ss')
+# print(itensTransformados)
+
+consultarDados(itensTransformados)
+# print(itensTransformados[0])
+# dataInicial = '1/01/1961'
+# print(itensTransformados([0][0]))
