@@ -1,5 +1,4 @@
 # Leitura de dados
-
 def carregarDados(nomeArq):
     dadosBrutos = []
     arquivo = open(nomeArq, "r")
@@ -18,7 +17,6 @@ def transformaLista(lista):
         listaTransformada.append(transformaDados(lista[cont]))
         cont = cont + 1
     return listaTransformada
-
 
 # utilizar somente na pesquisa de dados
 def formataData(dic):
@@ -40,7 +38,7 @@ def transformaDados(linha):
 def transformaEmDic(lista): #transformar em dicionário para uma busca mais fácil
     for linha in lista:
         dic[linha[0]] = {'PRECIPITACAO': linha[1],
-		    'MAXIMA': linha[2], 'MINIMA': linha[3], 
+		    'TEMPERATURA MAXIMA': linha[2], 'TEMPERATURA MINIMA': linha[3], 
 		    'HORAS INSOLAÇÃO': linha[4], 'TEMPERATURA MEDIA': linha[5],
 			'UMIDADE RELATIVA': linha[6], 'VELOCIDADE DO VENTO': linha[7]}
     return dic
@@ -52,7 +50,6 @@ def corrigirDados(lista): # correção de alguns dados que não condizem com a r
             chave['VELOCIDADE DO VENTO'] = 0
         if chave['PRECIPITACAO'] < 0:
             chave['PRECIPITACAO'] = 0
-    # print(chave)
     return lista
 
 # deve indicar o mês e ano iniciais, bem como o mês e ano finais que deseja visualizar os dados. 
@@ -60,15 +57,15 @@ def corrigirDados(lista): # correção de alguns dados que não condizem com a r
 def consultarDados(listaDeDics):
     dadosDtI = []
     dadosDtF = []
-    # dataInicial = '27/06/2016'
-    # dataFinal = '10/07/2016'
     dataInicial = input("Digite o mês e ano inicial (Ex:06/2017): ")
-    dataFinal = input("Digite o mês e ano final para pesquisa: ")
-    print("Digite se quer ver 1 - todos os dados")
-    print("2 - apenas os de precipitação")
-    print("3 - apenas os de temperatura")
-    print("4 - apenas os de umidade e vento para o período informado")
-    dadoEscolhido = int(input("1-4:")) 
+    dataFinal = input("Digite o mês e ano final para pesquisa (Ex:07/2017): ")
+    print("Digite se quer ver: ")
+    print("1) todos os dados")
+    print("2) apenas os de precipitação")
+    print("3) apenas os de temperatura")
+    print("4) apenas os de umidade e vento para o período informado")
+    dadoEscolhido = int(input(": ")) 
+
     # achar index pelo dicionario
     for value in dic[dataInicial].values():
         dadosDtI.append(value) 
@@ -79,11 +76,11 @@ def consultarDados(listaDeDics):
     indexDtI = itensTransformados.index(dadosDtI)
     indexDtF = itensTransformados.index(dadosDtF)
     listaExibicao = itensTransformados [indexDtI: indexDtF]
-    if dadoEscolhido == 1:
-        print('Data|Precipitação|Temp. Máxima|Temp. Mínima|Horas insolaradas|Temp. Média|Umidade relativa|Velocidade vento')
+
+    # listagem de itens de acordo com o usuário
     for item in listaExibicao:
         if dadoEscolhido == 1:
-            print(item)
+            print(f"Data: {item[0]}, Temperatura Máxima: {item[1]}, Temp. Máxima: {item[2]}, Temp. Mínima: {item[3]}, Horas Insolação: {item[4]} Temp. Média: {item[5]}, Umidade Relativa': {item[6]}, Velocidade do vento: {item[7]}")
         if dadoEscolhido == 2:
             print(f"Data: {item[0]}, Precipitação: {item[1]}")
         if dadoEscolhido == 3:
@@ -93,17 +90,23 @@ def consultarDados(listaDeDics):
     return listaDeDics
 
 def mesMaisChuvoso(dic):
+    maior = 0
     for key, value in dic.items():
-        print(key, value[0])
-        return dic
+        precipitacaoFloat = value['PRECIPITACAO']
+        if precipitacaoFloat > maior:
+            maior = precipitacaoFloat
+            maiorDado = key, value
+    return maiorDado
 
-
+# Dados base
 dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
 itensTransformados = transformaLista(dadosBrutos)
 dic = {}
 
+# Funções 
 transformaEmDic(itensTransformados)
 corrigirDados(dic)
-# consultarDados(dic)
-print(mesMaisChuvoso(dic))
+consultarDados(dic)
+mesMaisChuvoso(dic)
+
 # 
