@@ -5,7 +5,7 @@ def carregarDados(nomeArq):
     arquivo = open(nomeArq, "r")
     for linha in arquivo:
         linhas1 = linha[:-1]
-        linhas2 = linhas1[1 : len(linhas1)]
+        linhas2 = linhas1[0: len(linhas1)]
         dadosBrutos.append(linhas2)
     arquivo.close()
     return dadosBrutos
@@ -19,6 +19,13 @@ def transformaLista(lista):
         cont = cont + 1
     return listaTransformada
 
+
+# utilizar somente na pesquisa de dados
+def formataData(dic):
+    for item in dic:
+        item = item[3:len(item)]
+    print(dic)
+    return dic
 
 def transformaDados(linha):
     itens = linha.split(";")
@@ -53,36 +60,33 @@ def corrigirDados(lista): # correção de alguns dados que não condizem com a r
 def consultarDados(listaDeDics):
     dadosDtI = []
     dadosDtF = []
-    dataFinal = '8/07/2016'
-    dataInicial ='4/05/2016'
-    # dataInicial = input("Digite o mês e ano inicial (Ex:06/2017): ")
-    # dataFinal = input("Digite o mês e ano final para pesquisa: ")
+    dataInicial = input("Digite o mês e ano inicial (Ex:06/2017): ")
+    dataFinal = input("Digite o mês e ano final para pesquisa: ")
     print("Digite se quer ver 1 - todos os dados")
     print("2 - apenas os de precipitação")
     print("3 - apenas os de temperatura")
     print("4 - apenas os de umidade e vento para o período informado")
     dadoEscolhido = int(input("1-4:"))
-    for value in dic[dataInicial].values():
+
+    # achar index pelo dicionario
+    for value in formataData(dic[dataInicial].values()):
         dadosDtI.append(value)
-    for key, value in dic[dataFinal].items():
+    for value in formataData(dic[dataFinal].values()):
         dadosDtF.append(value)
     dadosDtI.insert(0, dataInicial)
     dadosDtF.insert(0, dataFinal)
-    indexDtI = itensTransformados.index(dadosDtI)
-    indexDtF = itensTransformados.index(dadosDtF)
-    print(itensTransformados[indexDtI: indexDtF])
+    indexDtI = formataData(itensTransformados.index(dadosDtI))
+    indexDtF = formataData(itensTransformados.index(dadosDtF))
+    print(itensTransformados [indexDtI: indexDtF])
+    return listaDeDics
 
 dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
 itensTransformados = transformaLista(dadosBrutos)
 dic = {}
+# print(dic['07/2016'])
 transformaEmDic(itensTransformados)
+novoDic = formataData(dic)
+print(novoDic)
+# consultarDados(itensTransformados)
 corrigirDados(dic)
-
-dataInicial = '7/07/2016' 
-# print(itensTransformados.index(['4/05/2016', 0.0, 18.6, 7.1, 5.9, 12.48, 86.0, 1.933333]), 'ss')
-# print(itensTransformados)
-
-consultarDados(itensTransformados)
-# print(itensTransformados[0])
-# dataInicial = '1/01/1961'
-# print(itensTransformados([0][0]))
+# consultarDados(itensTransformados)
