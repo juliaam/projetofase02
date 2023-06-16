@@ -61,8 +61,8 @@ def tirarData(lista):
 def consultarDados(dic):
     dadosDtI = []
     dadosDtF = []
-    dataInicial = input("Digite a data inicial (Ex:01/06/2014): ")
-    dataFinal = input("Digite a data final para pesquisa (Ex:18/11/2015): ")
+    dataInicial = input("Digite o mês e ano inicial (Ex:06/2014): ")
+    dataFinal = input("Digite o mês e ano final para a pesquisa (Ex:11/2015): ")
     print("Digite se quer ver: ")
     print("1) todos os dados")
     print("2) apenas os de precipitação")
