@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 # Leitura de dados
 def carregarDados(nomeArq):
     dadosBrutos = []
@@ -18,13 +20,6 @@ def transformaLista(lista):
         cont = cont + 1
     return listaTransformada
 
-# utilizar somente na pesquisa de dados
-def formataData(dic):
-    for item in dic:
-        item = item[3:len(item)]
-    # print(dic)
-    return dic
-
 def transformaDados(linha):
     itens = linha.split(";")
     linha = [itens[0]]
@@ -34,6 +29,49 @@ def transformaDados(linha):
             float(itens[cont]))
         cont = cont + 1
     return linha
+
+def formatarDataDic(dic):
+    for key in list(dic.keys()):
+        novoK = key[3:len(key)]
+        dic[novoK] = dic.pop(key)
+    return dic
+
+def consultarTempMin(dic):
+    valido = False
+    mes = 0
+    media = 0
+    while valido == False:
+        mes = str(input("Digite um mês(01 a 12): "))
+        if int(mes) > 0 and int(mes) < 13:
+            valido = True
+            anos = ['2006', '2007', '2008', '2009', '201']
+            anosMedia = []
+            somaGeral = 0 
+            pesoGeral = 0
+            somaAno = 0
+            pesoAno = 0
+            
+            for key, value in dic.items():
+                for ano in anos:
+                    # print(ano)
+                    # temperatura média dos ultimos 11 anos
+                    if ano in key and mes in key[3: 5]:
+                        somaGeral = somaGeral + value['TEMPERATURA MINIMA']
+                        pesoGeral = pesoGeral+ 1
+                #temperatura média do mês nos ultimos 11 anos
+                    if anos and mes in key[3:5]:  
+                            somaAno = somaAno + value['TEMPERATURA MINIMA']
+                            pesoAno = pesoAno + 1
+                            anosMedia.append(somaAno)
+                            anosMedia.append(pesoAno)
+
+                            
+            mediaG = somaGeral // pesoGeral
+            mediaA = somaAno // pesoAno 
+        else:
+            print("Digite o mês corretamente")
+        # print(mediaG, mediaA)
+        return mediaG, mediaA, mes
 
 def transformaEmDic(lista): #transformar em dicionário para uma busca mais fácil
     for linha in lista:
@@ -102,11 +140,17 @@ def mesMaisChuvoso(dic):
 dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
 itensTransformados = transformaLista(dadosBrutos)
 dic = {}
-
+dicData = formatarDataDic(dic)
 # Funções 
 transformaEmDic(itensTransformados)
 corrigirDados(dic)
-consultarDados(dic)
 mesMaisChuvoso(dic)
 
-# 
+coisas = consultarTempMin(dic)
+print(coisas)
+# print(formatarDataDic(dic))
+# consultarDados(dic)
+# consultarTempMin(dicData)
+# print(dicData)
+# print(dicData)
+
