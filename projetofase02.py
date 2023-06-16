@@ -58,7 +58,7 @@ def tirarData(lista):
         linha[0] = linha[0][3:10]
     return lista
         
-def consultarDados(dic):
+def consultarDados(novoDic):
     dadosDtI = []
     dadosDtF = []
     dataInicial = input("Digite o mês e ano inicial (Ex:06/2014): ")
@@ -107,14 +107,13 @@ def mesMaisChuvoso(dic):
 def consultarTempMin(dic):
     valido = False
     mes = 0
-    media = 0
     while valido == False:
         mes = str(input("Digite um mês(01 a 12) para consultar sua temperatura mínima e temperatura mínima dos últimos anos: "))
         if int(mes) > 0 and int(mes) < 13:
             valido = True
             anos = ['2006', '2007', '2008', '2009', '201'] 
             anosMedia = []
-            anoReferencia = '2005'
+            anoReferencia = 2006
             somaGeral = 0 
             pesoGeral = 0
             somaAno = 0
@@ -128,24 +127,28 @@ def consultarTempMin(dic):
                         pesoGeral = pesoGeral+ 1
 
                 #temperatura média do mês nos ultimos 11 anos
-                    if  int(key[6:10])>=2006:  
-                         if key[6:10] != anoReferencia:
-                            anosMediaObject = {'Temperatura mínima': somaAno/pesoAno, 'ano':key[6:10]}
+                intAno = key[3:7]
+                if  int(intAno)>=2006:  
+                         if int(intAno) != anoReferencia:
+                            anosMediaObject = {'Temperatura mínima': somaAno/pesoAno, 'ano':intAno}
                             anosMedia.append(anosMediaObject)
-                            anoReferencia = key[6:10]
+                            anoReferencia = int(intAno)
                             somaAno = 0
                             pesoAno = 0
-                         
-                    somaAno += value['TEMPERATURA MINIMA']
-                    pesoAno += 1
-            mediaG = somaGeral // pesoGeral
-            mediaA = somaAno // pesoAno 
+                somaAno += value['TEMPERATURA MINIMA']
+                pesoAno += 1
+            if somaGeral: mediaG = somaGeral / pesoGeral 
+            else: mediaG =  somaGeral
+            if somaAno: mediaA = somaAno / pesoAno 
+            else: mediaA = somaGeral
         else:
             print("Digite o mês corretamente")
+
         return mediaA, mediaG, mes, anosMedia
 
-# def grafico(dic):
-    # print(dic)
+def grafico(dic):
+
+    print(dic)
 
 # Dados base
 dadosBrutos = carregarDados("OK_Anexo_Arquivo_Dados_Projeto.csv")
