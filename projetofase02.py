@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 
 # Leitura de dados
 def carregarDados(nomeArq):
@@ -154,3 +153,14 @@ print(coisas)
 # print(dicData)
 # print(dicData)
 
+import matplotlib.pyplot as plt
+import random
+
+random.seed(42)
+anosa = ['2006', '2007', '2008', '2009', '201']
+anos = [a for a in anosa]
+valores = [random.randint(100,1500) for v in range(len(anos))]
+
+plt.bar(anos,valores)
+plt.xticks(range(1990,2010,2))
+plt.show()
